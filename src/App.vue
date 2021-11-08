@@ -1,6 +1,6 @@
 <template>
 <div class="app">
-  <about/>  
+  <about/>
   <tea/>
   <selection/>
   <feedback/>
