@@ -43,6 +43,8 @@
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
+        <!-- <button class="btn btn-outline-success" @click="$router.push('/chat')" >Search</button>  обвес событием через роутинг, альтернатива тегу  router-link-->
+
       </form>
     </div>
   </div>
@@ -50,7 +52,6 @@
 
   <router-view/>
 </template>
-
 <style lang="scss">
 
 </style>
