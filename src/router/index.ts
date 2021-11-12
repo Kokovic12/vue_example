@@ -12,6 +12,7 @@ import Contacts from '../views/Contacts.vue'
 import Chat from '../views/Chat.vue'
 import Login from '../views/Account/Login.vue'
 import Create from '../views/Account/Create.vue'
+import Cabinet from '../views/Account/Cabinet.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -58,6 +59,11 @@ const routes: Array<RouteRecordRaw> = [
     path:'/create',
     name: 'Create',
     component: Create
+  },
+  {
+    path:'/cabinet',
+    name: 'Cabinet',
+    component: Cabinet
   },
   // {
   //   path: '/about',

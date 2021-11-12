@@ -8,7 +8,7 @@
         <div class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Create Profile</h4>
+                    <h4 class="text-right">Profile</h4>
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value=""></div>
@@ -21,10 +21,11 @@
                     <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter you email" value=""></div>
                 </div>
                 <div class="row mt 4">
-                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="create you password" value="" ></div>
+                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="enter you password" value="" ></div>
                 </div>
-                
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+                <div class="mt-5 text-center">
+                    <router-link class="btn btn-primary profile-button" type="submit" to="/cabinet">Sign up</router-link>
+                </div>
             </div>
         </div>
     </div>

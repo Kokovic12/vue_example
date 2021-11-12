@@ -12,14 +12,16 @@
                     <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter you email" value=""></div>
                 </div>
                 <div class="row mt 4">
-                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="create you password" value="" ></div>
+                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="enter you password" value="" ></div>
                 </div>
-                
-                <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Log in Profile</button></div>
+                <div class="mt-5 text-center">
+                    <router-link class="btn btn-primary profile-button" type="submit" to="/cabinet">Log in Profile</router-link>
+                </div>
             </div>
         </div>
     </div>
 </div>
+<router-view/>
 </template>
 
 <script lang='ts'>
