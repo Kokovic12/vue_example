@@ -21,7 +21,7 @@
                     <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter you email" value=""></div>
                 </div>
                 <div class="row mt 4">
-                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="enter you password" value="" ></div>
+                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="create you password" value="" ></div>
                 </div>
                 
                 <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
