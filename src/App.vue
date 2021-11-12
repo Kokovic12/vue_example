@@ -34,7 +34,7 @@
               <router-link to="/login" class="dropdown-item">Log in to your account</router-link>
             </li>
             <li>
-              <router-link to="/create" class="dropdown-item">Create an account</router-link>
+              <router-link to="/create" class="dropdown-item">Create account</router-link>
             </li>
           </ul>
         </li>
