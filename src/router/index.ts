@@ -3,16 +3,16 @@ import {
   createWebHistory,
   RouteRecordRaw
 } from 'vue-router'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
-import Tea from '../views/Tea.vue'
-import Selection from '../views/Selection.vue'
-import Feedback from '../views/Feedback.vue'
-import Contacts from '../views/Contacts.vue'
-import Chat from '../views/Chat.vue'
-import Login from '../views/Account/Login.vue'
-import Create from '../views/Account/Create.vue'
-import Cabinet from '../views/Account/Cabinet.vue'
+import Home from '../components/Home.vue'
+import About from '../components/About.vue'
+import Tea from '../components/Tea.vue'
+import Selection from '../components/Selection.vue'
+import Feedback from '../components/Feedback.vue'
+import Contacts from '../components/Contacts.vue'
+import Chat from '../components/Chat.vue'
+import Login from '../components/Account/Login.vue'
+import Create from '../components/Account/Create.vue'
+import Cabinet from '../components/Account/Cabinet.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
