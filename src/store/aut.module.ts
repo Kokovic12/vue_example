@@ -14,14 +14,14 @@ export const auth = {
           (user: any): Promise<any> => {
           commit('loginSuccess', user)
           return Promise.resolve(user)
-        }
+        }).catch(
           (error: any): Promise<never> => {
           commit('loginFailure')
           return Promise.reject(error)
         }
       )
     },
-    logout({ commit }) {
+    logout({ commit }: any) {
       AuthService.logout()
       commit('logout')
     },
@@ -30,7 +30,7 @@ export const auth = {
           (        response: { data: any }) => {
           commit('registerSuccess')
           return Promise.resolve(response.data)
-        }
+        }).catch(
           (        error: any) => {
           commit('registerFailure')
           return Promise.reject(error)
@@ -59,3 +59,5 @@ export const auth = {
     }
   }
 }
+
+export default {}

@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const API_URL = 'http://localhost:8080/api/auth/'
 
-
-  function login(username: string, password: string) {
+export default {
+  login(username: string, password: string) {
     return axios
       .post(`${API_URL  }signin`, {
         username,
@@ -16,19 +16,18 @@ const API_URL = 'http://localhost:8080/api/auth/'
 
         return response.data
       })
-  };
+  },
 
- function logout() {
+  logout() {
     localStorage.removeItem('user')
-  };
+  },
 
-  function register(username: string, mobilenumber:string, email: string, password: string) {
+  register(username: string, mobilenumber:string, email: string, password: string) {
     return axios.post(`${API_URL  }signup`, {
       username,
       mobilenumber,
       email,
       password
     })
-  };
-
-export default {login, logout, register}
+  }
+}
