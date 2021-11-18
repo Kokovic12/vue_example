@@ -1,31 +1,104 @@
 <template>
-    <div class="container rounded bg-white mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-3 border-right">
-            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"></div>
+
+    <div class="col-md-12">
+    <div class="card card-container">
+      <img
+        id="profile-img"
+        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+        class="profile-img-card"
+      />
+      <Form :validation-schema="schema" @submit="handleLogin">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <Field name="username" type="text" class="form-control" />
+          <ErrorMessage name="username" class="error-feedback" />
         </div>
-        <div class="col-md-5 border-right">
-            <div class="p-3 py-5">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-            </div>
-                <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter you email" value=""></div>
-                </div>
-                <div class="row mt 4">
-                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="enter you password" value="" ></div>
-                </div>
-                <div class="mt-5 text-center">
-                    <router-link class="btn btn-primary profile-button" type="submit" to="/cabinet">Log in Profile</router-link>
-                </div>
-            </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <Field name="password" type="password" class="form-control" />
+          <ErrorMessage name="password" class="error-feedback" />
         </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" :disabled="loading">
+            <span
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+            ></span>
+            <span>Login</span>
+          </button>
+        </div>
+
+        <div class="form-group">
+          <div v-if="message" class="alert alert-danger" role="alert">
+            {{ message }}
+          </div>
+        </div>
+      </Form>
     </div>
-</div>
+  </div>
+
 <router-view/>
 </template>
 
 <script lang='ts'>
-    
+import {
+  Form,
+  Field,
+  ErrorMessage
+} from 'vee-validate'
+import * as yup from 'yup'
+
+export default {
+  name: 'Login',
+  components: {
+    Form,
+    Field,
+    ErrorMessage,
+  },
+  data(): { loading: boolean; message: string; schema: unknown } {
+    const schema = yup.object().shape({
+      username: yup.string().required('Username is required!'),
+      password: yup.string().required('Password is required!'),
+    })
+
+    return {
+      loading: false,
+      message: '',
+      schema,
+    }
+  },
+  computed: {
+    loggedIn(): unknown {
+      return this.$store.state.auth.status.loggedIn
+    },
+  },
+  created(): void {
+    if (this.loggedIn) {
+      this.$router.push('/profile')
+    }
+  },
+  methods: {
+    handleLogin(user:string): void {
+      this.loading = true
+
+      this.$store.dispatch('auth/login', user).then(
+        () => {
+          this.$router.push('/profile')
+        },
+        (error) => {
+          this.loading = false
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString()
+        }
+      )
+    },
+  },
+}
 </script>
 
 <style lang="scss">

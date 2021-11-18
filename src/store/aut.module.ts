@@ -11,11 +11,11 @@ export const auth = {
   actions: {
     login({ commit }: any, user: any) {
       return AuthService.login(user).then(
-          (        user: any) => {
+          (user: any): Promise<any> => {
           commit('loginSuccess', user)
           return Promise.resolve(user)
         }
-          (        error: any) => {
+          (error: any): Promise<never> => {
           commit('loginFailure')
           return Promise.reject(error)
         }
