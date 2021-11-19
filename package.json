@@ -24,7 +24,8 @@
     "vue3-material": "^1.0.8",
     "vuex": "^4.0.2",
     "vuex-class": "^0.3.2",
-    "vuex-module-decorators": "^1.0.1"
+    "vuex-module-decorators": "^1.0.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.18.0",
