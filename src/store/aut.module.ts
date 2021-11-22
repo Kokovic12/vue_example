@@ -1,21 +1,22 @@
 import AuthService from '../services/auth.service'
 
 const user = JSON.parse(localStorage.getItem('user'))
+
 const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null }
+  ? { status: { loggedIn: true }, user}
+  : { status: { loggedIn: false }, user: null}
 
 export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }: any, user: any) {
+    login({ commit }: any) {
       return AuthService.login(user).then(
-          (user: any): Promise<any> => {
+        (): Promise<any> => {
           commit('loginSuccess', user)
           return Promise.resolve(user)
         }).catch(
-          (error: any): Promise<never> => {
+        (error: any): Promise<never> => {
           commit('loginFailure')
           return Promise.reject(error)
         }
@@ -25,13 +26,13 @@ export const auth = {
       AuthService.logout()
       commit('logout')
     },
-    register({ commit }: any, user: any) {
+    register({ commit }: any) {
       return AuthService.register(user).then(
-          (        response: { data: any }) => {
+        (response: { data: any }) => {
           commit('registerSuccess')
           return Promise.resolve(response.data)
         }).catch(
-          (        error: any) => {
+        (error: any) => {
           commit('registerFailure')
           return Promise.reject(error)
         }
@@ -39,7 +40,7 @@ export const auth = {
     }
   },
   mutations: {
-    loginSuccess(state: { status: { loggedIn: boolean }; user: any }, user: any) {
+    loginSuccess(state: { status: { loggedIn: boolean }; user: any }) {
       state.status.loggedIn = true
       state.user = user
     },
