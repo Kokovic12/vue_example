@@ -11,7 +11,7 @@ import Feedback from '../views/Feedback.vue'
 import Contacts from '../views/Contacts.vue'
 import Chat from '../views/Chat.vue'
 import Login from '../views/Account/Login.vue'
-import Create from '../views/Account/Create.vue'
+import Register from '../views/Account/Register.vue'
 import Cabinet from '../views/Account/Cabinet.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -56,9 +56,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Login
   },
   {
-    path:'/create',
-    name: 'Create',
-    component: Create
+    path:'/register',
+    name: 'Register',
+    component: Register
   },
   {
     path:'/cabinet',
