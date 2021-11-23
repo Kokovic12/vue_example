@@ -1,4 +1,5 @@
 <template>
+<form @submit.prevent="onSubmit">
     <div class="container rounded bg-white mt-5 mb-5">
     <div class="row">
         <div class="col-md-3 border-right">
@@ -9,22 +10,48 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
             </div>
                 <div class="row mt-3">
-                    <div class="col-md-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter you email" value=""></div>
+                    <div class="col-md-12">
+                        <label class="labels">Username</label>
+                        <input v-model="form.username" type="text" class="form-control" placeholder="enter you email" required>
+                    </div>
                 </div>
                 <div class="row mt 4">
-                    <div class="col-md-24"><label class="labels">Password</label><input type="password" class="form-control" placeholder="enter you password" value="" ></div>
+                    <div class="col-md-24">
+                        <label class="labels">Password</label>
+                        <input v-model="form.password" type="password" class="form-control" placeholder="enter you password" required>
+                    </div>
                 </div>
                 <div class="mt-5 text-center">
-                    <router-link class="btn btn-primary profile-button" type="submit" to="/cabinet">Log in Profile</router-link>
+                    <div class="text-danger">{{userStore.state.error}}</div>
+                    <button type="submit" class="btn btn-primary profile-button">Log in Profile</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</form>
 <router-view/>
 </template>
 
 <script lang='ts'>
+import { defineComponent, reactive } from 'vue'
+import userStore from '@/store/index'
+
+export default defineComponent({
+  setup() {
+    const form = reactive({
+      username: '',
+      password: ''
+    })
+    const onSubmit = () => {
+      userStore.login(form.username, form.password)
+      form.username = ''
+      form.password = ''
+    }
+
+    return { form, userStore ,onSubmit }
+  }
+})
 </script>
 
 <style lang="scss">
