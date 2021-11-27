@@ -3,6 +3,7 @@
         "name": "Igor",
         "username": "Igor12",
         "email": "Igor@mail.ru",
-        "password": "123" 
+        "password": "123", 
+        "token":"qwe"
     }
 ]

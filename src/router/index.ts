@@ -63,7 +63,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path:'/cabinet',
     name: 'Cabinet',
-    component: Cabinet
+    component: Cabinet,
+    meta : {
+      requiresAuth: true
+    }
   },
   // {
   //   path: '/about',
@@ -79,5 +82,21 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+const ETALON_TOKEN = 'qwe'
+
+router.beforeEach(
+  (to, from, next)=> {
+    if(to.meta.requiresAuth){
+      const token = localStorage.getItem('token')
+      if(token===ETALON_TOKEN){
+        next()
+      } else {
+        next('/login')
+      }
+    }
+    next()
+  }
+)
 
 export default router

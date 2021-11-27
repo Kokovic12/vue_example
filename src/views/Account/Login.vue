@@ -36,17 +36,22 @@
 <script lang='ts'>
 import { defineComponent, reactive } from 'vue'
 import userStore from '@/store/index'
+import {useRouter} from 'vue-router'
 
 export default defineComponent({
   setup() {
+    const router = useRouter()
     const form = reactive({
       username: '',
       password: ''
     })
-    const onSubmit = () => {
-      userStore.login(form.username, form.password)
+    const onSubmit = async () => {
+      const isSuccess = await userStore.login(form.username, form.password)
       form.username = ''
       form.password = ''
+      if (isSuccess) {
+        router.push('/cabinet')
+      }
     }
 
     return { form, userStore ,onSubmit }
@@ -55,5 +60,5 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-    
+
 </style>

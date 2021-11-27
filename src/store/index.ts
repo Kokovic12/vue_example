@@ -4,8 +4,8 @@ import * as Request from '@/requests'
 const state = reactive ({
   name: '',
   username: '',
-  error: '' 
-}) 
+  error: ''
+})
 
 const getters = reactive ({
   isLoggedIn: computed(() => state.username !== '')
@@ -27,6 +27,7 @@ const actions = {
     }
     state.name = user.name
     state.username = username
+    localStorage.setItem('token', user.token)
     state.error = ''
 
     return true
