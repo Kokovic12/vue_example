@@ -35,8 +35,8 @@
 
 <script lang='ts'>
 import { defineComponent, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import userStore from '@/store/index'
-import {useRouter} from 'vue-router'
 
 export default defineComponent({
   setup() {

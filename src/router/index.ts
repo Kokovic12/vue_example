@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path:'/feedback',
-    name: 'Feeddback',
+    name: 'Feedback',
     component: Feedback
   },
   {
@@ -68,14 +68,6 @@ const routes: Array<RouteRecordRaw> = [
       requiresAuth: true
     }
   },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
 ]
 
 const router = createRouter({
@@ -87,9 +79,9 @@ const ETALON_TOKEN = 'qwe'
 
 router.beforeEach(
   (to, from, next)=> {
-    if(to.meta.requiresAuth){
+    if(to.meta.requiresAuth) {
       const token = localStorage.getItem('token')
-      if(token===ETALON_TOKEN){
+      if(token===ETALON_TOKEN) {
         next()
       } else {
         next('/login')

@@ -32,9 +32,10 @@ const actions = {
 
     return true
   },
-  async Logout() {
+  async logout() {
     state.name = ''
     state.username = ''
+    // localStorage.removeItem('token')
   }
 }
 
