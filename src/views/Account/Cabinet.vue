@@ -68,7 +68,7 @@
                     </div>
                 </div>
                   <div class="mt-5 text-center">
-                    <button type="submit" class="btn btn-primary profile-button" @click.prevent="onLogout()">Log Out</button>
+                    <button type="submit" class="btn btn-primary profile-button" @click="onlogout()">Log Out</button>
                   </div>
               </div>
         </div>
@@ -78,12 +78,13 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue'
+import { useCookies } from 'vue3-cookies'
 
 export default defineComponent({
-
   methods: {
-    onLogout() {
-      localStorage.removeItem('token')
+    onlogout() {
+      const { cookies } = useCookies()
+      cookies.remove('token')
       this.$router.push('/login')
     }
   }

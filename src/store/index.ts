@@ -1,10 +1,12 @@
 import { computed, reactive } from 'vue'
+// import { useCookies } from 'vue-universal-cookies'
+import {  useCookies } from 'vue3-cookies'
 import * as Request from '@/requests'
 
 const state = reactive ({
   name: '',
   username: '',
-  error: ''
+  error: '',
 })
 
 const getters = reactive ({
@@ -27,16 +29,17 @@ const actions = {
     }
     state.name = user.name
     state.username = username
-    localStorage.setItem('token', user.token)
+    const { cookies } = useCookies()
+    cookies.set('token', user.token)    
     state.error = ''
 
     return true
   },
-  async logout() {
-    state.name = ''
-    state.username = ''
-    // localStorage.removeItem('token')
-  }
+  // async logout() {
+  //   state.name = ''
+  //   state.username = ''
+  //   state.token = ''
+  // }
 }
 
 export default { state, getters, ...actions }

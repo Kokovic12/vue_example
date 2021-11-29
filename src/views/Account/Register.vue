@@ -56,13 +56,13 @@ export default  {
       }
     }
   },
+  created () {
+    this.$emit('ready')
+  },
   methods:{
     register () {
       console.log('submitting form', this.form)
     }
-  },
-  created () {
-    this.$emit('ready')
   }
 }
 </script>

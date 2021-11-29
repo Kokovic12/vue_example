@@ -3,6 +3,7 @@ import {
   createWebHistory,
   RouteRecordRaw
 } from 'vue-router'
+import { useCookies } from 'vue3-cookies'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import Tea from '../views/Tea.vue'
@@ -80,7 +81,8 @@ const ETALON_TOKEN = 'qwe'
 router.beforeEach(
   (to, from, next)=> {
     if(to.meta.requiresAuth) {
-      const token = localStorage.getItem('token')
+      const { cookies } = useCookies()
+      const token = cookies.get('token')
       if(token===ETALON_TOKEN) {
         next()
       } else {

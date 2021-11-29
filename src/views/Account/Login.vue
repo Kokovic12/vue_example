@@ -45,6 +45,7 @@ export default defineComponent({
       username: '',
       password: ''
     })
+
     const onSubmit = async () => {
       const isSuccess = await userStore.login(form.username, form.password)
       form.username = ''
@@ -55,7 +56,7 @@ export default defineComponent({
     }
 
     return { form, userStore ,onSubmit }
-  }
+  },
 })
 </script>
 
