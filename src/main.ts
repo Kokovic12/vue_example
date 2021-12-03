@@ -6,6 +6,7 @@ import { globalCookiesConfig, useCookies } from 'vue3-cookies'
 import App from './App.vue'
 import router from './router'
 
+
 globalCookiesConfig({
   expireTimes: '30d',
   path: '/',

@@ -1,7 +1,7 @@
 import { computed, reactive } from 'vue'
 // import { useCookies } from 'vue-universal-cookies'
 import {  useCookies } from 'vue3-cookies'
-import * as Request from '@/requests'
+import * as Request from '../services/requests'
 
 const state = reactive ({
   name: '',
