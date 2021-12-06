@@ -5,11 +5,9 @@ import actions from './actions'
 
 
 const store = createStore({
-  modules:{
-    state,
-    getters,
-    actions
-  }
+  state,
+  getters,
+  actions
 })
 
 export default store

@@ -1,16 +1,25 @@
 import {  useCookies } from 'vue3-cookies'
+import { ActionTree } from 'vuex'
 import * as Request from '../services/requests'
-import state from './state'
+import  state, { State } from './state'
+// import { ActionTypes } from './actions_types'
 
-const actions = {
-  async getUser () {
+
+type Actions = {
+  getUser: () => Promise<void>
+  login: ({ commit }: any,
+    payload: {username: string; password: string}) => Promise<boolean>
+}
+
+const actions: ActionTree<State, State> & Actions = {
+  async getUser () : Promise<void> {
     const user = await Request.getUser()
     if (user == null) return
   
     state.name = user.name
     state.username = user.username
   },
-  async login(username: string, password: string) {
+  async login(_, { username, password }) : Promise<boolean> {
     const user = await Request.login(username, password)
     if (user == null) {
       state.error= 'Could not find user.'
@@ -32,4 +41,4 @@ const actions = {
 }
   
 
-export default { actions }
+export default actions

@@ -34,20 +34,22 @@
 </template>
 
 <script lang='ts'>
-import { defineComponent, reactive } from 'vue'
+import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+// import { ActionTree } from 'vuex'
 import userStore from '@/store/index'
+
 
 export default defineComponent({
   setup() {
     const router = useRouter()
-    const form = reactive({
+    const form = {
       username: '',
       password: ''
-    })
+    }
 
     const onSubmit = async () => {
-      const isSuccess = await userStore.login(form.username, form.password)
+      const isSuccess = await userStore.dispatch('login', form)
       form.username = ''
       form.password = ''
       if (isSuccess) {

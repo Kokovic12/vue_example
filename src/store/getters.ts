@@ -1,9 +1,12 @@
-import { reactive, computed } from 'vue'
-import state from './state'
+import { GetterTree } from 'vuex'
+import state, { State } from './state'
 
+type Getters = {
+  isLoggedIn: () => boolean
+}
 
-const getters = reactive ({
-  isLoggedIn: computed(() => state.username !== '')
-})
+const getters: GetterTree<State, State> & Getters = {
+  isLoggedIn: () => state.username !== ''
+}
   
-export default { getters }
+export default getters

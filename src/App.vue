@@ -4,14 +4,15 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import  Navbar  from './components/Navbar.vue'
 
-export default  {  
+export default defineComponent ({  
   name: 'App',
-  comments:{
+  components:{
     Navbar
   }
-}
+})
 
 </script>
 
