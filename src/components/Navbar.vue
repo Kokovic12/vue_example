@@ -25,6 +25,9 @@
         <li class="nav-item">
           <router-link to="/chat" class="nav-link">Chat</router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/products" class="nav-link">Products</router-link>
+        </li>
         <li class="nav-item dropdown">
           <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#"   role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Account
