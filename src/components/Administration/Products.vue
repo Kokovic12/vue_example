@@ -1,86 +1,96 @@
 <template>
-    <div class="container">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <h3 class="p-3 text-center">Catalog products</h3>
-        <table class="table">
-  <thead>
-    <tr>
-      <th class="border-2 p-2" scope="col" @click="sortByName">Name of tea</th>
-      <th class="border-2 p-2" scope="col" @click="sortBySort">Sort</th>
-      <th class="border-2 p-2" scope="col" @click="sortByPrice">Price ($)</th>
-      <th class="border-2 p-2" scope="col">Discription</th>
-      <th class="border-2 p-2" scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="product in products" :key="product.id">
-      <td >{{product.nameTea}}</td> 
-      <td >{{product.sortTea}}</td>      
-      <td >{{product.priceTea}}</td>      
-      <td >{{product.descriptionTea}}</td>      
-      <td >{{product.action}}</td>      
-    </tr>
-  </tbody>
-</table>
-    </div>
+  <div>
+    <div id="demo" class="container">
+  <input v-model="search" class="form-control" placeholder="Filter users by name or age">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th v-repeat="column: columns">
+          <a v-class="active: sortKey == column" href="#" v-on="click:sortBy(column)">
+            {{ column | capitalize }}
+          </a>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr v-repeat="users | filterBy search | orderBy sortKey reverse">
+        <td>{{ name }}</td>
+        <td>{{ age }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <label>Name</label>
+    <input v-model="newUser.name" type="text" class="form-control" >
+  </div>
+
+  <div class="form-group">
+    <label>Age</label>
+    <input v-model="newUser.age" type="name" class="form-control" >
+  </div>
+  <button type="submit" class="btn btn-primary" @click="addUser">Add</button>
+</div>
+  </div>
 </template>
 
-<script lang='ts'>
-
-const performSearch = (rows: any[], term: string) =>{
-  const results = rows.filter(
-    (    row: any[]) => row.join(' ').toLowerCase().includes(term.toLowerCase())
-  )
-  return results
-}
-
+<script>
 export default {
   data() {
-    return{
-      rows: [],
-      products : [
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description', action: 'vrv' },
-        { nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
+    return {
+      sortKey: 'name',
 
+      reverse: false,
 
+      search: '',
+
+      columns: ['name', 'age'],
+
+      newUser: {},
+
+      users: [
+        { name: 'John', age: 50 },
+        { name: 'Jane', age: 22 },
+        { name: 'Paul', age: 34 },
+        { name: 'Kate', age: 15 },
+        { name: 'Amanda', age: 65 },
+        { name: 'Steve', age: 38 },
+        { name: 'Keith', age: 21 },
+        { name: 'Don', age: 50 },
+        { name: 'Susan', age: 21 }
       ]
     }
   },
-  mounted() :void {
-    this.rows=this.products
-  },
+
   methods: {
-    sortByName(): void {
-      this.products.sort((a,b)=>a.nameTea.localeCompare(b.nameTea))
+    sortBy(sortKey) {
+      this.reverse = (this.sortKey === sortKey) ? ! this.reverse : false
+
+      this.sortKey = sortKey
     },
-    sortBySort(): void {
-      this.products.sort((a,b)=>a.sortTea.localeCompare(b.sortTea))
-    },
-    sortByPrice(): void {
-      this.products.sort((a,b)=>a.priceTea.localeCompare(b.priceTea))
-    },
-    onSearch (e: { target: { value: any } })  {
-      const term = e.target.value
-      this.rows = performSearch(this.rows,term)
+
+    addUser() {
+      this.users.push(this.newUser)
+      this.newUser = {}
     }
-  },
-  
+  }
 }
 </script>
 
+<style lang="">
+  body {
+  margin: 2em 0;
+}
 
+a {
+  font-weight: normal;
+  color: blue;
+}
 
+a.active {
+  font-weight: bold;
+  color: black;
+}
+
+</style>
