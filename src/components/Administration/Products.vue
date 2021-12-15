@@ -1,251 +1,236 @@
 <template>
-  <div class="between:flex bottom:margin-3">
-    <div class="center:flex-items">
-      <span class="right:margin-1">Show</span>
-      <select v-model="currentEntries" class="select" @change="paginateEntries">
-        <option v-for="se in showEntries" :key="se" :value="se">{{ se }}</option>
-      </select> 
-      <span class="left:margin-1">entries</span>
-    </div>
-    <div class="end:flex">
-      <input v-model="searchInput" type="search" class="input px:width-25" placeholder="Search here..." @keyup="searchEvent">
-    </div>
-  </div>
+  <div>
 
-  <table class="table table:border secondary-5:border">
-    <thead>
-      <tr>
-        <th v-for="th in tableHeader" :key="th">
-          <div class="between:flex center:items">
-            <span>{{ th.text }}</span>
-            <span @click.prevent="sortByColumn(th.name)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter none:event" viewBox="0 0 16 16">
-                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+    <button type="button" class="btn btn-primary m-2 fload-end" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="addClick()"> Add Tea</button>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            <div class="d-flex flex-row">
+              <input v-model="idTeaFilter" class="form-control m-2" placeholder="Filter number" @keyup="FilterFn()">
+
+              <button type="button" class="btn btn-light" @click="sortResult('numberTea',true)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn-light" @click="sortResult('numberTea',false)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+              </button>
+
+            </div>
+            Number
+          </th>
+          <th>
+            <div class="d-flex flex-row">
+              <input v-model="nameTeaFilter" class="form-control m-2" placeholder="Filter name" @keyup="FilterFn()">
+
+              <button type="button" class="btn btn-light" @click="sortResult('nameTea',true)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn-light" @click="sortResult('nameTea',false)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+              </button>
+              
+            </div>
+            Name of tea
+          </th>
+          <th>
+            <div class="d-flex flex-row">
+              <input v-model="sortTeaFilter" class="form-control m-2" placeholder="Filter sort" @keyup="FilterFn()">
+
+
+              <button type="button" class="btn btn-light" @click="sortResult('sortTea',true)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn-light" @click="sortResult('sortTea',false)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+              </button>
+              
+            </div>            
+            Sort
+          </th>
+          <th>
+            <div class="d-flex flex-row">
+              <input v-model="priceTeaFilter" class="form-control m-2" placeholder="Filter price" @keyup="FilterFn()">
+
+              <button type="button" class="btn btn-light" @click="sortResult('priceTea',true)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="btn btn-light" @click="sortResult('priceTea',false)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+                </svg>
+              </button>
+              
+            </div>
+            Price
+          </th>
+          <th>
+            Discription
+          </th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="product in products" :key="product.id">
+          <td>{{product.idTea}}</td>
+          <td >{{product.nameTea}}</td> 
+          <td >{{product.sortTea}}</td>      
+          <td >{{product.priceTea}}</td>      
+          <td >{{product.descriptionTea}}</td>  
+          <td>
+            <button type="button" class="btn btn-light mr-1" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editClick(product)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
               </svg>
-            </span>
-          </div>
-        </th>
-      </tr>
-      <tr>
-        <td>#</td>
-        <td><input v-model="col.name" type="search" class="input" placeholder="Filter name..." @keyup="filterByColumn"></td>
-        <td>
-          <select v-model="col.position" class="select" @change="filterByColumn">
-            <option value="">-- Filter position... --</option>
-            <option v-for="cd in uniqColumnData('position')" :key="cd" :value="cd">{{ cd }}</option>
-          </select>
-        </td>
-        <td>
-          <select v-model="col.office" class="select" @change="filterByColumn">
-            <option value="">-- Filter office... --</option>
-            <option v-for="cd in uniqColumnData('office')" :key="cd" :value="cd">{{ cd }}</option>
-          </select>
-        </td>
-        <td><input v-model="col.extension" type="search" class="input" placeholder="Filter extension..." @keyup="filterByColumn"></td>
-        <td><input v-model="col.startdate" type="search" class="input" placeholder="Filter start date..." @keyup="filterByColumn"></td>
-        <td><input v-model="col.salary" type="search" class="input" placeholder="Filter salary..." @keyup="filterByColumn"></td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="td in tableData" :key="td">
-        <td>{{ td.id }}</td>
-        <td>{{ td.name }}</td>
-        <td>{{ td.position }}</td>
-        <td>{{ td.office }}</td>
-        <td>{{ td.extension }}</td>
-        <td>{{ td.startdate }}</td>
-        <td>{{ td.salary }}</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <th colspan="6">Only salaries of this page</th>
-        <th>{{ pageSalaries }}</th>
-      </tr>
-      <tr>
-        <th colspan="6">Total of all salaries</th>
-        <th>{{ totalSalaries }}</th>
-      </tr>
-    </tfoot>
-  </table>
-  
-  <div class="between:flex y:margin-3">
-    <div class="start:flex-items">Show {{ showInfo.from }} to {{ showInfo.to }} of {{ showInfo.of }} entries</div>
-    <div class="end:flex center:items">
-      <ul class="pagination:nav">
-        <li :class="['nav-item', { 'disabled': currentPage === 1 }]">
-          <a href="#" class="nav-link" @click.prevent="currentPage = 1, paginateEntries()">First</a>
-        </li>
-        <li :class="['nav-item', { 'disabled': currentPage === 1 }]">
-          <a href="#" class="nav-link" @click.prevent="(currentPage < 1) ? currentPage = 1 : currentPage -= 1, paginateEntries()">Prev</a>
-        </li>
-        <li v-for="pagi in showPagination" :key="pagi" :class="['nav-item', {'ellipsis': pagi === '...', 'active': pagi === currentPage}]">
-          <a href="#" class="nav-link" @click.prevent="paginateEvent(pagi)">{{ pagi }}</a>
-        </li>
-        <li :class="['nav-item', { 'disabled': currentPage === allPages }]">
-          <a href="#" class="nav-link" @click.prevent="(currentPage > allPages) ? currentPage = allPages : currentPage += 1, paginateEntries()">Next</a>
-        </li>
-        <li :class="['nav-item', { 'disabled': currentPage === allPages }]">
-          <a href="#" class="nav-link" @click.prevent="currentPage = allPages, paginateEntries()">Last</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+            </button>
+            <button type="button" class="btn btn-light mr-1" @click="deleteClick(product.idTea)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+              <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+              </svg>
+            </button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
 
+    <div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="exampleModalLabel" class="modal-title">{{modalTitel}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+        <div class="modal-body">
+
+          <div class="input-group mb-3"></div>
+            <span class="input-group-text">name of Tea</span>
+            <input v-model="nameTea" type="text" class="form-control">
+            <span class="input-group-text">sort of Tea</span>
+            <input v-model="sortTea" type="text" class="form-control">
+            <span class="input-group-text">price of Tea</span>
+            <input v-model="priceTea" type="text" class="form-control">
+            <span class="input-group-text">description of Tea</span>
+            <input v-model="descriptionTea" type="text" class="form-control">
+
+        </div>
+
+        <button v-if="idTea==0" type="button" class="btn btn-primary"  @click="createClick()">Create</button>
+        <button v-if="idTea!=0" type="button"  class="btn btn-primary"  @click="updateClick()">Update</button>
+
+      </div>
+      </div>
+    </div>
+
+  </div>
 </template>
 
+
 <script>
-import { $array, $object } from '../assets/alga.min.js'
 
 export default {
-  name: 'DataTable',
   data() {
     return {
-      columns: [
-        { name: 'id', text: 'ID' },
-        { name: 'name', text: 'Name' },
-        { name: 'position', text: 'Position' },
-        { name: 'office', text: 'Office' },
-        { name: 'extension', text: 'Extension' },
-        { name: 'startdate', text: 'Start Date' },
-        { name: 'salary', text: 'Salary' },
+      modalTitle:'',
+      idTea: 0,
+      nameTea:'',
+      sortTea:'',
+      priceTea:'',
+      descriptionTea:'',
+      idTeaFilter:'',
+      nameTeaFilter:'',
+      sortTeaFilter:'',
+      priceTeaFilter:'',
+      withoutFilter:[],
+
+      products : [
+        { idTea: 1, nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
+        { idTea: 2, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
+        { idTea: 3, nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
+        { idTea: 4, nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
+        { idTea: 5, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
       ],
-      entries: [],
-      showEntries: [5, 10, 15, 25, 50, 75, 100],
-      currentEntries: 10,
-      filteredEntries: [],
-      currentPage: 1,
-      allPages: 1,
-      searchInput: '',
-      searchEntries: [],
-      col: {
-        name: '',
-        position: '',
-        office: '',
-        extension: '',
-        startdate: '',
-        salary: ''
-      },
-      sortcol: {
-        name: '',
-        position: '',
-        office: '',
-        extension: '',
-        startdate: '',
-        salary: ''
-      }
     }
   },
-  computed: {
-    showInfo() {
-      return $array.show(this.getCurrentEntries())(this.currentPage, this.currentEntries)
-    },
-    showPagination() {
-      return $array.pagination(this.allPages, this.currentPage, 3)
-    },
-    tableHeader() {
-      return this.columns
-    },
-    tableData() {
-      return this.filteredEntries
-    },
-    pageSalaries() {
-      return $array.sum(this.filteredEntries, 'salary')
-    },
-    totalSalaries() {
-      return $array.sum(this.entries, 'salary')
-    }
+  mounted() {
   },
-  created() {
-    this.getAllEmployees().then(res => {
-      this.entries = res.data
-      this.paginateData(this.entries)
-      // this.filteredEntries = $array.paginate(this.entries)(this.currentPage, this.currentEntries)
-      // this.allPages = $array.pages(this.entries, this.currentEntries)
-    })
-  },
-  methods: {
-    async getAllEmployees() {
-      const response = await fetch('http://localhost:3011/employee')
-      return response.json()
+
+  methods:{
+    addClick() {
+      this.modalTitle='Add Tea'
+      this.idTea=0
+      this.nameTea=''
+      this.sortTea=''
+      this.priceTea=''
+      this.descriptionTea=''
+      
     },
-    paginateEntries() {
-      if(this.searchInput.length >= 3) {
-        this.searchEntries = $array.search(this.searchInput)(this.entries)
-        this.paginateData(this.searchEntries)
-        // this.filteredEntries = $array.paginate(this.searchEntries)(this.currentPage, this.currentEntries)
-        // this.allPages = $array.pages(this.searchEntries, this.currentEntries)
-      } else {
-        this.searchEntries = []
-        this.paginateData(this.entries)
-        this.col = {
-          name: '',
-          position: '',
-          office: '',
-          extension: '',
-          startdate: '',
-          salary: ''
+    editClick(product) {
+      this.modalTitle='Edit Tea'
+      this.idTea=product.idTea
+      this.nameTea=product.nameTea
+      this.sortTea=product.sortTea
+      this.priceTea=product.priceTea
+      this.descriptionTea=product.descriptionTea
+
+    },
+    createClick() {
+      //  code
+    },
+    updateClick(id) {
+      //  code
+    },
+    // deleteClick() {
+    //   if(!confirm('Are you sure?')) {
+        
+    //   }
+    // },
+
+    FilterFn() {
+      const { idTeaFilter, nameTeaFilter, sortTeaFilter, priceTeaFilter } = this
+
+      this.products=this.withoutFilter.filter(
+        (el) =>(el.idTea.toString().toLowerCase().includes(idTeaFilter.toString().trim().toLowerCase())
+          &&
+          el.nameTea.toString().toLowerCase().includes(nameTeaFilter.toString().trim().toLowerCase())
+          &&
+          el.sortTea.toString().toLowerCase().includes(sortTeaFilter.toString().trim().toLowerCase())
+          &&
+          el.priceTea.toString().toLowerCase().includes(priceTeaFilter.toString().trim().toLowerCase()))
+      )
+    },
+
+    sortResult(prop,asc) {
+      this.departments=this.departmentsWithoutFilter.sort((a,b) => {
+        if(asc) {
+          return (a[prop]>b[prop])?1:((a[prop]<b[prop])?-1:0)
         }
-        // this.filteredEntries = $array.paginate(this.entries)(this.currentPage, this.currentEntries)
-        // this.allPages = $array.pages(this.entries, this.currentEntries)
-      }
-    },
-    paginateEvent(page) {
-      this.currentPage = page
-      this.paginateEntries()
-    },
-    searchEvent() {
-      this.currentPage = 1
-      this.paginateEntries()
-    },
-    paginateData(data) {
-      this.filteredEntries = $array.paginate(data)(this.currentPage, this.currentEntries)
-      this.allPages = $array.pages(data, this.currentEntries)
-    },
-    getCurrentEntries() {
-      return (this.searchEntries.length <= 0) ? this.entries : this.searchEntries
-    },
-    uniqColumnData(column) {
-      return $array.unique(this.getCurrentEntries(), column)
-    },
-    filterByColumn() {
-      const filterCol = $object.removeBy('')(this.col)
-      let filterData = this.getCurrentEntries()
-      if(Object.entries(filterCol).length >= 1) {
-        filterData = $array.filtered(...Object.values(filterCol))(this.getCurrentEntries(), Object.keys(filterCol))
-      }
-      this.paginateData(filterData)
-    },
-    sortByColumn(column) {
-      this.col = {
-        name: '',
-        position: '',
-        office: '',
-        extension: '',
-        startdate: '',
-        salary: ''
-      }
-      let sortedEntries = this.getCurrentEntries()
-      const sortedColumn = this.sortcol[column]
-      if(sortedColumn === '') {
-        this.sortcol[column] = 'asc'
-        sortedEntries = $array.sorted(this.getCurrentEntries())(column, 'asc')
-      } else if(sortedColumn === 'asc') {
-        this.sortcol[column] = 'desc'
-        sortedEntries = $array.sorted(this.getCurrentEntries())(column, 'desc')
-      } else if(sortedColumn === 'desc') {
-        this.sortcol[column] = ''
-      }
-      this.paginateData(sortedEntries)
+            
+        return (b[prop]>a[prop])?1:((b[prop]<a[prop])?-1:0)
+            
+      })
     }
+
   }
 }
 </script>
-
-
-
-
-
-
-
-
