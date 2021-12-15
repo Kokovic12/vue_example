@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "-": "0.0.1",
+    "alga-js": "0.0.9",
     "axios": "^0.24.0",
     "babel-eslint": "^10.1.0",
     "beegridtable": "^1.5.2",

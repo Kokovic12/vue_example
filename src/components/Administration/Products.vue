@@ -1,96 +1,251 @@
 <template>
-  <div>
-    <div id="demo" class="container">
-  <input v-model="search" class="form-control" placeholder="Filter users by name or age">
+  <div class="between:flex bottom:margin-3">
+    <div class="center:flex-items">
+      <span class="right:margin-1">Show</span>
+      <select v-model="currentEntries" class="select" @change="paginateEntries">
+        <option v-for="se in showEntries" :key="se" :value="se">{{ se }}</option>
+      </select> 
+      <span class="left:margin-1">entries</span>
+    </div>
+    <div class="end:flex">
+      <input v-model="searchInput" type="search" class="input px:width-25" placeholder="Search here..." @keyup="searchEvent">
+    </div>
+  </div>
 
-  <table class="table table-striped">
+  <table class="table table:border secondary-5:border">
     <thead>
       <tr>
-        <th v-repeat="column: columns">
-          <a v-class="active: sortKey == column" href="#" v-on="click:sortBy(column)">
-            {{ column | capitalize }}
-          </a>
+        <th v-for="th in tableHeader" :key="th">
+          <div class="between:flex center:items">
+            <span>{{ th.text }}</span>
+            <span @click.prevent="sortByColumn(th.name)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter none:event" viewBox="0 0 16 16">
+                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </span>
+          </div>
         </th>
       </tr>
+      <tr>
+        <td>#</td>
+        <td><input v-model="col.name" type="search" class="input" placeholder="Filter name..." @keyup="filterByColumn"></td>
+        <td>
+          <select v-model="col.position" class="select" @change="filterByColumn">
+            <option value="">-- Filter position... --</option>
+            <option v-for="cd in uniqColumnData('position')" :key="cd" :value="cd">{{ cd }}</option>
+          </select>
+        </td>
+        <td>
+          <select v-model="col.office" class="select" @change="filterByColumn">
+            <option value="">-- Filter office... --</option>
+            <option v-for="cd in uniqColumnData('office')" :key="cd" :value="cd">{{ cd }}</option>
+          </select>
+        </td>
+        <td><input v-model="col.extension" type="search" class="input" placeholder="Filter extension..." @keyup="filterByColumn"></td>
+        <td><input v-model="col.startdate" type="search" class="input" placeholder="Filter start date..." @keyup="filterByColumn"></td>
+        <td><input v-model="col.salary" type="search" class="input" placeholder="Filter salary..." @keyup="filterByColumn"></td>
+      </tr>
     </thead>
-
     <tbody>
-      <tr v-repeat="users | filterBy search | orderBy sortKey reverse">
-        <td>{{ name }}</td>
-        <td>{{ age }}</td>
+      <tr v-for="td in tableData" :key="td">
+        <td>{{ td.id }}</td>
+        <td>{{ td.name }}</td>
+        <td>{{ td.position }}</td>
+        <td>{{ td.office }}</td>
+        <td>{{ td.extension }}</td>
+        <td>{{ td.startdate }}</td>
+        <td>{{ td.salary }}</td>
       </tr>
     </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="6">Only salaries of this page</th>
+        <th>{{ pageSalaries }}</th>
+      </tr>
+      <tr>
+        <th colspan="6">Total of all salaries</th>
+        <th>{{ totalSalaries }}</th>
+      </tr>
+    </tfoot>
   </table>
-  <div class="form-group">
-    <label>Name</label>
-    <input v-model="newUser.name" type="text" class="form-control" >
+  
+  <div class="between:flex y:margin-3">
+    <div class="start:flex-items">Show {{ showInfo.from }} to {{ showInfo.to }} of {{ showInfo.of }} entries</div>
+    <div class="end:flex center:items">
+      <ul class="pagination:nav">
+        <li :class="['nav-item', { 'disabled': currentPage === 1 }]">
+          <a href="#" class="nav-link" @click.prevent="currentPage = 1, paginateEntries()">First</a>
+        </li>
+        <li :class="['nav-item', { 'disabled': currentPage === 1 }]">
+          <a href="#" class="nav-link" @click.prevent="(currentPage < 1) ? currentPage = 1 : currentPage -= 1, paginateEntries()">Prev</a>
+        </li>
+        <li v-for="pagi in showPagination" :key="pagi" :class="['nav-item', {'ellipsis': pagi === '...', 'active': pagi === currentPage}]">
+          <a href="#" class="nav-link" @click.prevent="paginateEvent(pagi)">{{ pagi }}</a>
+        </li>
+        <li :class="['nav-item', { 'disabled': currentPage === allPages }]">
+          <a href="#" class="nav-link" @click.prevent="(currentPage > allPages) ? currentPage = allPages : currentPage += 1, paginateEntries()">Next</a>
+        </li>
+        <li :class="['nav-item', { 'disabled': currentPage === allPages }]">
+          <a href="#" class="nav-link" @click.prevent="currentPage = allPages, paginateEntries()">Last</a>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>Age</label>
-    <input v-model="newUser.age" type="name" class="form-control" >
-  </div>
-  <button type="submit" class="btn btn-primary" @click="addUser">Add</button>
-</div>
-  </div>
 </template>
 
 <script>
+import { $array, $object } from '../assets/alga.min.js'
+
 export default {
+  name: 'DataTable',
   data() {
     return {
-      sortKey: 'name',
-
-      reverse: false,
-
-      search: '',
-
-      columns: ['name', 'age'],
-
-      newUser: {},
-
-      users: [
-        { name: 'John', age: 50 },
-        { name: 'Jane', age: 22 },
-        { name: 'Paul', age: 34 },
-        { name: 'Kate', age: 15 },
-        { name: 'Amanda', age: 65 },
-        { name: 'Steve', age: 38 },
-        { name: 'Keith', age: 21 },
-        { name: 'Don', age: 50 },
-        { name: 'Susan', age: 21 }
-      ]
+      columns: [
+        { name: 'id', text: 'ID' },
+        { name: 'name', text: 'Name' },
+        { name: 'position', text: 'Position' },
+        { name: 'office', text: 'Office' },
+        { name: 'extension', text: 'Extension' },
+        { name: 'startdate', text: 'Start Date' },
+        { name: 'salary', text: 'Salary' },
+      ],
+      entries: [],
+      showEntries: [5, 10, 15, 25, 50, 75, 100],
+      currentEntries: 10,
+      filteredEntries: [],
+      currentPage: 1,
+      allPages: 1,
+      searchInput: '',
+      searchEntries: [],
+      col: {
+        name: '',
+        position: '',
+        office: '',
+        extension: '',
+        startdate: '',
+        salary: ''
+      },
+      sortcol: {
+        name: '',
+        position: '',
+        office: '',
+        extension: '',
+        startdate: '',
+        salary: ''
+      }
     }
   },
-
-  methods: {
-    sortBy(sortKey) {
-      this.reverse = (this.sortKey === sortKey) ? ! this.reverse : false
-
-      this.sortKey = sortKey
+  computed: {
+    showInfo() {
+      return $array.show(this.getCurrentEntries())(this.currentPage, this.currentEntries)
     },
-
-    addUser() {
-      this.users.push(this.newUser)
-      this.newUser = {}
+    showPagination() {
+      return $array.pagination(this.allPages, this.currentPage, 3)
+    },
+    tableHeader() {
+      return this.columns
+    },
+    tableData() {
+      return this.filteredEntries
+    },
+    pageSalaries() {
+      return $array.sum(this.filteredEntries, 'salary')
+    },
+    totalSalaries() {
+      return $array.sum(this.entries, 'salary')
+    }
+  },
+  created() {
+    this.getAllEmployees().then(res => {
+      this.entries = res.data
+      this.paginateData(this.entries)
+      // this.filteredEntries = $array.paginate(this.entries)(this.currentPage, this.currentEntries)
+      // this.allPages = $array.pages(this.entries, this.currentEntries)
+    })
+  },
+  methods: {
+    async getAllEmployees() {
+      const response = await fetch('http://localhost:3011/employee')
+      return response.json()
+    },
+    paginateEntries() {
+      if(this.searchInput.length >= 3) {
+        this.searchEntries = $array.search(this.searchInput)(this.entries)
+        this.paginateData(this.searchEntries)
+        // this.filteredEntries = $array.paginate(this.searchEntries)(this.currentPage, this.currentEntries)
+        // this.allPages = $array.pages(this.searchEntries, this.currentEntries)
+      } else {
+        this.searchEntries = []
+        this.paginateData(this.entries)
+        this.col = {
+          name: '',
+          position: '',
+          office: '',
+          extension: '',
+          startdate: '',
+          salary: ''
+        }
+        // this.filteredEntries = $array.paginate(this.entries)(this.currentPage, this.currentEntries)
+        // this.allPages = $array.pages(this.entries, this.currentEntries)
+      }
+    },
+    paginateEvent(page) {
+      this.currentPage = page
+      this.paginateEntries()
+    },
+    searchEvent() {
+      this.currentPage = 1
+      this.paginateEntries()
+    },
+    paginateData(data) {
+      this.filteredEntries = $array.paginate(data)(this.currentPage, this.currentEntries)
+      this.allPages = $array.pages(data, this.currentEntries)
+    },
+    getCurrentEntries() {
+      return (this.searchEntries.length <= 0) ? this.entries : this.searchEntries
+    },
+    uniqColumnData(column) {
+      return $array.unique(this.getCurrentEntries(), column)
+    },
+    filterByColumn() {
+      const filterCol = $object.removeBy('')(this.col)
+      let filterData = this.getCurrentEntries()
+      if(Object.entries(filterCol).length >= 1) {
+        filterData = $array.filtered(...Object.values(filterCol))(this.getCurrentEntries(), Object.keys(filterCol))
+      }
+      this.paginateData(filterData)
+    },
+    sortByColumn(column) {
+      this.col = {
+        name: '',
+        position: '',
+        office: '',
+        extension: '',
+        startdate: '',
+        salary: ''
+      }
+      let sortedEntries = this.getCurrentEntries()
+      const sortedColumn = this.sortcol[column]
+      if(sortedColumn === '') {
+        this.sortcol[column] = 'asc'
+        sortedEntries = $array.sorted(this.getCurrentEntries())(column, 'asc')
+      } else if(sortedColumn === 'asc') {
+        this.sortcol[column] = 'desc'
+        sortedEntries = $array.sorted(this.getCurrentEntries())(column, 'desc')
+      } else if(sortedColumn === 'desc') {
+        this.sortcol[column] = ''
+      }
+      this.paginateData(sortedEntries)
     }
   }
 }
 </script>
 
-<style lang="">
-  body {
-  margin: 2em 0;
-}
 
-a {
-  font-weight: normal;
-  color: blue;
-}
 
-a.active {
-  font-weight: bold;
-  color: black;
-}
 
-</style>
+
+
+
+
