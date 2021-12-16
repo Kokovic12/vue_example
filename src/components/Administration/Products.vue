@@ -1,3 +1,4 @@
+
 <template>
   <div>
 
@@ -135,8 +136,8 @@
 
         </div>
 
-        <button v-if="idTea==0" type="button" class="btn btn-primary"  @click="createClick()">Create</button>
-        <button v-if="idTea!=0" type="button"  class="btn btn-primary"  @click="updateClick()">Update</button>
+        <button v-if="idTea==0" type="button" class="btn btn-primary m-2 fload-end"  @click="createClick()">Create</button>
+        <button v-if="idTea!=0" type="button"  class="btn btn-primary m-2 fload-end"  @click="updateClick()">Update</button>
 
       </div>
       </div>
@@ -147,6 +148,14 @@
 
 
 <script>
+// import { axios } from 'axios'
+
+const performSearch = (rows, term) => {
+  const results = rows.filter(
+    row => row.join(' ').toLowerCase().includes(term.toLowerCase())
+  )
+  return results
+}
 
 export default {
   data() {
@@ -162,20 +171,29 @@ export default {
       sortTeaFilter:'',
       priceTeaFilter:'',
       withoutFilter:[],
-
+      // API_URL:'http://localhost:49146/api/',
       products : [
-        { idTea: 1, nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { idTea: 2, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
-        { idTea: 3, nameTea: 'Shue', sortTea: 'puer', priceTea: '15', descriptionTea:'some description' },
-        { idTea: 4, nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
-        { idTea: 5, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
+        { idTea: 1, nameTea: 'Alishan', sortTea: 'oolong', priceTea: 5, descriptionTea:'some description' },
+        { idTea: 2, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: 10, descriptionTea:'some description' },
+        { idTea: 3, nameTea: 'Shue', sortTea: 'puer', priceTea: 15, descriptionTea:'some description' },
+        { idTea: 4, nameTea: 'Alishan', sortTea: 'oolong', priceTea: 5, descriptionTea:'some description' },
+        { idTea: 5, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: 10, descriptionTea:'some description' },
       ],
     }
   },
   mounted() {
+    this.refreshData()
   },
 
   methods:{
+    // refreshData() {
+    //   axios.get(`${this.API_URL}products`)
+    //     .then((response)=>{
+    //       this.products=response.data
+    //       this.withoutFilter=response.data
+    //     })
+    // },
+
     addClick() {
       this.modalTitle='Add Tea'
       this.idTea=0
@@ -195,16 +213,14 @@ export default {
 
     },
     createClick() {
-      //  code
+      // code
     },
     updateClick(id) {
       //  code
     },
-    // deleteClick() {
-    //   if(!confirm('Are you sure?')) {
-        
-    //   }
-    // },
+    deleteClick() {
+      // code
+    },
 
     FilterFn() {
       const { idTeaFilter, nameTeaFilter, sortTeaFilter, priceTeaFilter } = this
@@ -220,17 +236,27 @@ export default {
       )
     },
 
-    sortResult(prop,asc) {
-      this.departments=this.departmentsWithoutFilter.sort((a,b) => {
-        if(asc) {
-          return (a[prop]>b[prop])?1:((a[prop]<b[prop])?-1:0)
-        }
+    // sortResult(prop,asc) {
+    //   this.products=this.withoutFilter.sort((a,b) => {
+    //     if(asc) {
+    //       if (a[prop]>b[prop]) {
+    //         return 1
+    //       } 
+    //       if(a[prop]<b[prop]) {
+    //         return -1
+    //       } 
+    //       return 0
             
-        return (b[prop]>a[prop])?1:((b[prop]<a[prop])?-1:0)
-            
-      })
-    }
-
+    //     } 
+    //     if ((b[prop]>a[prop])) {
+    //       return 1
+    //     } 
+    //     if ((b[prop]<a[prop])) {
+    //       return -1
+    //     } 
+    //     return 0     
+    //   })
+    // },
   }
 }
 </script>

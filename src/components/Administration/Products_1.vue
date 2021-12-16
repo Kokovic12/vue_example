@@ -1,3 +1,84 @@
+<template>
+  <div>
+    <div id="demo" class="container">
+  <input v-model="search" class="form-control" placeholder="Filter users by name or age">
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th v-for="column in columns" :key="column.id">
+          <a v-class="active in sortKey == column" href="#" @click="sortBy(column)">
+            {{ column | capitalize }}
+          </a>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr v-repeat="users | filterBy search | orderBy sortKey reverse">
+        <td>{{ name }}</td>
+        <td>{{ age }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="form-group">
+    <label>Name</label>
+    <input v-model="newUser.name" type="text" class="form-control" >
+  </div>
+
+  <div class="form-group">
+    <label>Age</label>
+    <input v-model="newUser.age" type="name" class="form-control" >
+  </div>
+  <button type="submit" class="btn btn-primary" @click="addUser()">Add</button>
+</div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      sortKey: 'name',
+
+      reverse: false,
+
+      search: '',
+
+      columns: ['name', 'age'],
+
+      newUser: {},
+
+      users: [
+        { name: 'John', age: 50 },
+        { name: 'Jane', age: 22 },
+        { name: 'Paul', age: 34 },
+        { name: 'Kate', age: 15 },
+        { name: 'Amanda', age: 65 },
+        { name: 'Steve', age: 38 },
+        { name: 'Keith', age: 21 },
+        { name: 'Don', age: 50 },
+        { name: 'Susan', age: 21 }
+      ]
+    }
+  },
+
+  methods: {
+    sortBy(sortKey) {
+      this.reverse = (this.sortKey === sortKey) ? ! this.reverse : false
+
+      this.sortKey = sortKey
+    },
+
+    addUser() {
+      this.users.push(this.newUser)
+      this.newUser = {}
+    }
+  }
+}
+</script>  
+      
+      
       products : [
         { idTea: 1, nameTea: 'Alishan', sortTea: 'oolong', priceTea: '5', descriptionTea:'some description' },
         { idTea: 2, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: '10', descriptionTea:'some description' },
@@ -13,6 +94,13 @@
         [  '4',  'Alishan',  'oolong',  '5', 'some description' ],
         [  '5',  'Da Hong pao',  'oolong',  '10', 'some description' ],
       ],
+
+        { 'idTea': 1, 'nameTea': 'Alishan', 'sortTea': 'oolong', 'priceTea': 5, 'descriptionTea':'some description' },
+        { 'idTea': 2, 'nameTea': 'Da Hong pao', 'sortTea': 'oolong', 'priceTea': 10, 'descriptionTea':'some description' },
+        { 'idTea': 3, 'nameTea': 'Shue', 'sortTea': 'puer', 'priceTea': 15, 'descriptionTea':'some description' },
+        { 'idTea': 4, 'nameTea': 'Alishan', 'sortTea': 'oolong', 'priceTea': 5, 'descriptionTea':'some description' },
+        { 'idTea': 5, 'nameTea': 'Da Hong pao', 'sortTea': 'oolong', 'priceTea': 10, 'descriptionTea':'some description' },
+
 
 
 
