@@ -4,6 +4,18 @@
 
     <button type="button" class="btn btn-primary m-2 fload-end" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="addClick()"> Add Tea</button>
 
+      <!-- <div id="demo">
+      <form id="search">
+        Search <input v-model="searchQuery" name="query" />
+      </form>
+      <demo-grid
+        :teas="products"
+        :columns="gridColumns"
+        :filter-key="searchQuery"
+      >
+      </demo-grid>
+    </div> -->
+      
     <table class="table table-striped">
       <thead>
         <tr>
@@ -28,7 +40,7 @@
           </th>
           <th>
             <div class="d-flex flex-row">
-              <input v-model="nameTeaFilter" class="form-control m-2" placeholder="Filter name" @keyup="FilterFn()">
+              <input v-model="nameTeaFilter" icon='search' class="form-control m-2" placeholder="Filter name" @keyup="FilterFn()">
 
               <button type="button" class="btn btn-light" @click="sortResult('nameTea',true)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
@@ -67,7 +79,7 @@
           </th>
           <th>
             <div class="d-flex flex-row">
-              <input v-model="priceTeaFilter" class="form-control m-2" placeholder="Filter price" @keyup="FilterFn()">
+              <input v-model="priceTeaFilter" icon='search' class="form-control m-2" placeholder="Filter price" @keyup="Filter()">
 
               <button type="button" class="btn btn-light" @click="sortResult('priceTea',true)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
@@ -123,7 +135,6 @@
       </div>
 
         <div class="modal-body">
-
           <div class="input-group mb-3"></div>
             <span class="input-group-text">name of Tea</span>
             <input v-model="nameTea" type="text" class="form-control">
@@ -133,7 +144,6 @@
             <input v-model="priceTea" type="text" class="form-control">
             <span class="input-group-text">description of Tea</span>
             <input v-model="descriptionTea" type="text" class="form-control">
-
         </div>
 
         <button v-if="idTea==0" type="button" class="btn btn-primary m-2 fload-end"  @click="createClick()">Create</button>
@@ -148,14 +158,15 @@
 
 
 <script>
+// import { computed } from 'vue'
 // import { axios } from 'axios'
 
-const performSearch = (rows, term) => {
-  const results = rows.filter(
-    row => row.join(' ').toLowerCase().includes(term.toLowerCase())
-  )
-  return results
-}
+// const performSearch = (rows, term) => {
+//   const results = rows.filter(
+//     row => row.join(' ').toLowerCase().includes(term.toLowerCase())
+//   )
+//   return results
+// }
 
 export default {
   data() {
@@ -182,21 +193,13 @@ export default {
     }
   },
   mounted() {
-    this.refreshData()
   },
 
   methods:{
-    // refreshData() {
-    //   axios.get(`${this.API_URL}products`)
-    //     .then((response)=>{
-    //       this.products=response.data
-    //       this.withoutFilter=response.data
-    //     })
-    // },
 
     addClick() {
       this.modalTitle='Add Tea'
-      this.idTea=0
+      this.idTea=''
       this.nameTea=''
       this.sortTea=''
       this.priceTea=''
@@ -213,7 +216,13 @@ export default {
 
     },
     createClick() {
-      // code
+      const { products, nameTea, sortTea, priceTea, descriptionTea } = this
+      this.products = [...products, {
+        nameTea,
+        sortTea,
+        priceTea,
+        descriptionTea
+      }]
     },
     updateClick(id) {
       //  code
@@ -222,6 +231,7 @@ export default {
       // code
     },
 
+    // computed:{
     FilterFn() {
       const { idTeaFilter, nameTeaFilter, sortTeaFilter, priceTeaFilter } = this
 
@@ -234,7 +244,17 @@ export default {
           &&
           el.priceTea.toString().toLowerCase().includes(priceTeaFilter.toString().trim().toLowerCase()))
       )
+      // },
     },
+
+    Filter() {
+      const pr=this.priceTea
+      return this.products.filter((elem) => {
+        if(pr==='') return true
+        return elem.priceTea.indexOf(pr) > -1
+      })
+    }
+
 
     // sortResult(prop,asc) {
     //   this.products=this.withoutFilter.sort((a,b) => {
