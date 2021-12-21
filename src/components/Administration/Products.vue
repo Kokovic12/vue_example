@@ -1,4 +1,3 @@
-
 <template>
   <div>
 
@@ -103,7 +102,7 @@
       </thead>
       <tbody>
         <tr v-for="(product, index) in sortedTeas" :key="product.id">
-          <td>{{product.idTea}}</td>
+          <td>{{index+1}}</td>
           <td >{{product.nameTea}}</td> 
           <td >{{product.sortTea}}</td>      
           <td >{{product.priceTea}}</td>      
@@ -146,7 +145,7 @@
         </div>
 
         <button v-if="idTea==0" type="button" class="btn btn-primary m-2 fload-end"  @click="createClick()">Create</button>
-        <button v-if="idTea!=0" type="button"  class="btn btn-primary m-2 fload-end"  @click="updateClick()">Update</button>
+        <button v-if="idTea!=0" type="button"  class="btn btn-primary m-2 fload-end"  @click="updateClick(index)">Update</button>
 
       </div>
       </div>
@@ -162,12 +161,17 @@
 //     row => row.join(' ').toLowerCase().includes(term.toLowerCase())
 //   )
 //   return results
-// }
 
-// const sortBynameTea = (d1,d2)=>(d1.nameTea.toLowerCase()>d2.nameTea.toLowerCase())?1:-1,
+
+// const sortByidTea = (d1,d2)=>(d1.idTea.toLowerCase()>d2.idTea.toLowerCase())?1:-1
+// const sortBynameTea = (d1,d2)=>(d1.nameTea.toLowerCase()>d2.nameTea.toLowerCase())?1:-1
+// const sortBysortTea = (d1,d2)=>(d1.sortTea.toLowerCase()>d2.sortTea.toLowerCase())?1:-1
+// const sortBypriceTea = (d1,d2)=>(d1.priceTea.toLowerCase()>d2.priceTea.toLowerCase())?1:-1
+
 export default {
   data() {
     return {
+      // updateIndex: 0,
       teas:[],
       currentSort:'name',
       currentSortDir:'asc',
@@ -181,9 +185,10 @@ export default {
       nameTeaFilter:'',
       sortTeaFilter:'',
       priceTeaFilter:'',
+      // sortParam:'',
       withoutFilter:[],
       products : [
-        { idTea: 1, nameTea: 'Alishan', sortTea: 'oolong', priceTea: 5, descriptionTea:'some description' },
+        { idTea: 1 , nameTea: 'Alishan', sortTea: 'oolong', priceTea: 5, descriptionTea:'some description' },
         { idTea: 2, nameTea: 'Da Hong pao', sortTea: 'oolong', priceTea: 10, descriptionTea:'some description' },
         { idTea: 3, nameTea: 'Shue', sortTea: 'puer', priceTea: 15, descriptionTea:'some description' },
         { idTea: 4, nameTea: 'Alishan', sortTea: 'oolong', priceTea: 5, descriptionTea:'some description' },
@@ -192,7 +197,18 @@ export default {
     }
   },
   computed:{
+    
     sortedTeas() {
+      // switch(this.sortParam) {
+      //   case 'idTea':return this.products.sort(sortByidTea)
+      //   case 'nameTea':return this.products.sort(sortBynameTea)
+      //   case 'sortTea':return this.products.sort(sortBysortTea)
+      //   case 'priceTea':return this.products.sort(sortBypriceTea)
+      //   default: return this.products
+      // }
+
+
+      
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       return this.products.sort((a,b)=>{
         let modifier = 1
@@ -205,7 +221,6 @@ export default {
   },
 
   methods:{
-
     sort(s) {
       if(s=== this.currentSort) {
         this.currentSortDir=this.currentSortDir==='asc'?'desc':'asc'
@@ -229,12 +244,14 @@ export default {
       this.sortTea=product.sortTea
       this.priceTea=product.priceTea
       this.descriptionTea=product.descriptionTea
+      
+      // this.updateIndex = product.index
+      // this.product=this.products[product.index]
 
     },
     createClick() {
       const { products, nameTea, sortTea, priceTea, descriptionTea } = this
       this.products = [...products, {
-        idTea: this.products.length +1,
         nameTea,
         sortTea,
         priceTea,
@@ -242,10 +259,17 @@ export default {
       }]
     },
     updateClick(id) {
-      //  code
+      // this.products[this.this.updateIndex]=this.product
+      // this.product = {
+      //   nameTea: '',
+      //   sortTea: '',
+      //   priceTea: '',
+      //   description:''
+      // }
     },
     deleteClick(index) {
-      this.products.pop(index, 1)
+      if(window.confirm('Do you really want to delete item?')) {
+        this.products.splice(index, 1)}
     },
 
     // computed:{
