@@ -1,17 +1,17 @@
 <template>
 <nav class="navbar navbar-expand-lg navbar-light bg-warning bg-opacity-25">
   <div class="container-fluid">
-    <router-link to='/' class="navbar-brand">Tea<br>room</router-link>    
+    <router-link to='/' class="navbar-brand">Tea<br>room</router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <router-link to="/about" class="nav-link active" aria-current="page">About project</router-link>          
+          <router-link to="/about" class="nav-link active" aria-current="page">About project</router-link>
         </li>
-        <li class="nav-item">  
-          <router-link to="/tea" class="nav-link">Tea</router-link>         
+        <li class="nav-item">
+          <router-link to="/tea" class="nav-link">Tea</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/selection" class="nav-link">Tea selection</router-link>
@@ -26,7 +26,7 @@
           <router-link to="/chat" class="nav-link">Chat</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/products" class="nav-link">Products</router-link>
+          <router-link v-if="isAdmin" to="/products" class="nav-link">Products</router-link>
         </li>
         <li class="nav-item dropdown">
           <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#"   role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,7 +41,8 @@
             </li>
           </ul>
         </li>
-        
+        <li>{{isAdmin}}</li>
+
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -56,9 +57,22 @@
 </template>
 
 <script lang='ts'>
+import { defineComponent } from 'vue'
+import { useStore } from 'vuex'
+
+export default defineComponent({
+  computed: {
+    isAdmin() {
+      const store = useStore()
+      const { isAdmin } = store.getters
+
+      return isAdmin
+    }
+  }
+})
 
 </script>
 
 <style lang="scss">
-    
+
 </style>

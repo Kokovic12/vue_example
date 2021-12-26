@@ -14,7 +14,6 @@ import Chat from '../components/Chat.vue'
 import Login from '../components/Account/Login.vue'
 import Register from '../components/Account/Register.vue'
 import Cabinet from '../components/Account/Cabinet.vue'
-import Products from '../components/Administration/Products.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -51,11 +50,6 @@ const routes: Array<RouteRecordRaw> = [
     path:'/chat',
     name: 'Chat',
     component: Chat
-  },
-  {
-    path:'/products',
-    name: 'Products',
-    component: Products
   },
   {
     path:'/login',

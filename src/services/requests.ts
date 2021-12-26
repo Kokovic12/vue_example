@@ -1,8 +1,10 @@
+
 export type User = {
   name: string
   username: string
   token:string
   password: string
+  role:string
 }
 export type UserList = Array<User>
 

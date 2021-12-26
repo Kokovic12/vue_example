@@ -36,7 +36,7 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-// import { ActionTree } from 'vuex'
+import Products from '../Administration/Products.vue'
 import userStore from '@/store/index'
 
 
@@ -54,6 +54,12 @@ export default defineComponent({
       form.password = ''
       if (isSuccess) {
         router.push('/cabinet')
+        router.addRoute(  {
+          path:'/products',
+          name: 'Products',
+          component: Products
+        },
+        )
       }
     }
 

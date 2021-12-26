@@ -15,9 +15,11 @@ const actions: ActionTree<State, State> & Actions = {
   async getUser () : Promise<void> {
     const user = await Request.getUser()
     if (user == null) return
-  
+
     state.name = user.name
     state.username = user.username
+
+
   },
   async login(_, { username, password }) : Promise<boolean> {
     const user = await Request.login(username, password)
@@ -27,10 +29,11 @@ const actions: ActionTree<State, State> & Actions = {
     }
     state.name = user.name
     state.username = username
+    state.role=user.role
     const { cookies } = useCookies()
-    cookies.set('token', user.token)    
+    cookies.set('token', user.token)
     state.error = ''
-  
+
     return true
   },
   // async logout() {
@@ -39,6 +42,6 @@ const actions: ActionTree<State, State> & Actions = {
   //   state.token = ''
   // }
 }
-  
+
 
 export default actions

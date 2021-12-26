@@ -4,6 +4,17 @@
         "username": "Igor12",
         "email": "Igor@mail.ru",
         "password": "123", 
-        "token":"qwe"
+        "token":"qwe",
+        "role":"Admin"
+    },
+    {
+        "name": "Artem",
+        "username": "Artem21",
+        "email": "Artem@mail.ru",
+        "password": "321", 
+        "token":"qwe",
+        "role":"User"
+
     }
+
 ]

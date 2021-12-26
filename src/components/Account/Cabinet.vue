@@ -80,12 +80,14 @@
 import { defineComponent } from 'vue'
 import { useCookies } from 'vue3-cookies'
 
+
 export default defineComponent({
   methods: {
     onlogout() {
       const { cookies } = useCookies()
       cookies.remove('token')
       this.$router.push('/login')
+
     }
   }
 
@@ -174,3 +176,4 @@ p {
 }
 
 </style>
+
