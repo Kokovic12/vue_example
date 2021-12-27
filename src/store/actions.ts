@@ -2,8 +2,6 @@ import {  useCookies } from 'vue3-cookies'
 import { ActionTree } from 'vuex'
 import * as Request from '../services/requests'
 import  state, { State } from './state'
-// import { ActionTypes } from './actions_types'
-
 
 type Actions = {
   getUser: () => Promise<void>
@@ -36,11 +34,11 @@ const actions: ActionTree<State, State> & Actions = {
 
     return true
   },
-  // async logout() {
-  //   state.name = ''
-  //   state.username = ''
-  //   state.token = ''
-  // }
+  async logout() {
+    state.name = ''
+    state.username = ''
+    state.role = ''
+  }
 }
 
 

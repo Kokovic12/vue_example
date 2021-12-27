@@ -18,17 +18,17 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th >
+          <th @click="sort('idTea')">
             <div class="d-flex flex-row">
               <input v-model="idTeaFilter" class="form-control m-2" placeholder="Filter number" @keyup="FilterFn()">
 
-              <button type="button" class="btn btn-light" @click="sort('numberTea',true)">
+              <button type="button" class="btn btn-light" @click="sortResult('idTea',true)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-square" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
                 </svg>
               </button>
 
-              <button type="button" class="btn btn-light" @click="sort('numberTea',false)">
+              <button type="button" class="btn btn-light" @click="sortResult('idTea',false)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-square" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 9.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
                 </svg>
@@ -102,7 +102,7 @@
       </thead>
       <tbody>
         <tr v-for="(product, index) in sortedTeas" :key="product.id">
-          <td>{{index+1}}</td>
+          <td>{{product.idTea}}</td>
           <td >{{product.nameTea}}</td> 
           <td >{{product.sortTea}}</td>      
           <td >{{product.priceTea}}</td>      
@@ -230,7 +230,7 @@ export default {
 
     addClick() {
       this.modalTitle='Add Tea'
-      this.idTea=''
+      this.idTea=this.products.length + 1
       this.nameTea=''
       this.sortTea=''
       this.priceTea=''

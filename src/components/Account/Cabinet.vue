@@ -79,6 +79,9 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import { useCookies } from 'vue3-cookies'
+import { useStore } from 'vuex'
+import userStore from '@/store/index'
+
 
 
 export default defineComponent({
@@ -87,7 +90,7 @@ export default defineComponent({
       const { cookies } = useCookies()
       cookies.remove('token')
       this.$router.push('/login')
-
+      userStore.dispatch('logout')
     }
   }
 
