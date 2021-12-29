@@ -1,9 +1,0 @@
-{
-    "data":[
-        { "id": 1, "name": "Alishan", "sort": "oolong", "price": 5, "description":"some description" },
-        { "id": 2, "name": "Da Hong pao", "sort": "oolong", "price": 10, "description":"some description" },
-        { "id": 3, "name": "Shue", "sort": "puer", "price": 15, "description":"some description" },
-        { "id": 4, "name": "Alishan", "sort": "oolong", "price": 5, "description":"some description" },
-        { "id": 5, "name": "Da Hong pao", "sort": "oolong", "price": 10, "description":"some description" }
-    ]
-}
