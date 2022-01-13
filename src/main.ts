@@ -21,6 +21,13 @@ import Rating from 'primevue/rating'
 import Toast from 'primevue/toast'
 import ToastService from 'primevue/toastservice'
 
+import { library , dom } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+
+
 import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
@@ -28,6 +35,11 @@ import { globalCookiesConfig, useCookies } from 'vue3-cookies'
 import store from './store'
 import App from './App.vue'
 import router from './router'
+
+library.add(fas)
+library.add(fab)
+library.add(far)
+dom.watch()
 
 
 globalCookiesConfig({ 
@@ -47,6 +59,7 @@ app
   .use(useCookies)
   .use(store)
 
+  .component('font-awesome-icon', FontAwesomeIcon)
   .component('Toast', Toast)
   .component('DataTable', DataTable)
   .component('Column', Column)
